@@ -2,4 +2,8 @@ flask
 pillow
 imagehash
 gunicorn
+<<<<<<< Updated upstream
 flask-cors
+=======
+flask-cors
+>>>>>>> Stashed changes
