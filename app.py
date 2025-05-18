@@ -42,6 +42,3 @@ def buscar_producto():
             })
     
     return jsonify({"error": "Producto no encontrado"}), 404
-
-if __name__ == '__main__':
-    app.run()
