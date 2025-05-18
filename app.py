@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, send_from_directory, request
+from flask_cors import CORS
 import os
 import json
 
 app = Flask(__name__)
+CORS(app)  # Habilita CORS para todas las rutas
 
 # Ruta para verificar que el servidor está activo
 @app.route('/')
@@ -42,3 +44,6 @@ def buscar_producto():
             })
     
     return jsonify({"error": "Producto no encontrado"}), 404
+
+if __name__ == '__main__':
+    app.run(debug=True)
