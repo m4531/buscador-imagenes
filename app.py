@@ -1,35 +1,47 @@
-from flask import Flask, request, jsonify
-from PIL import Image
-import imagehash
+from flask import Flask, jsonify, send_from_directory, request
 import os
+import json
 
 app = Flask(__name__)
-BASE_DIR = "imagenes_catalogo"
 
-def calcular_hash(imagen_path):
-    with Image.open(imagen_path) as img:
-        return imagehash.phash(img)
+# Ruta para verificar que el servidor está activo
+@app.route('/')
+def home():
+    return "¡Servidor activo y funcionando!"
 
-@app.route('/comparar', methods=['POST'])
-def comparar():
+# Ruta para servir el archivo JSON
+@app.route('/datos/<filename>')
+def serve_json(filename):
+    directory = os.path.join(os.getcwd(), "datos")
+    try:
+        return send_from_directory(directory, filename)
+    except FileNotFoundError:
+        return jsonify({"error": "Archivo no encontrado"}), 404
+
+# Ruta para buscar productos
+@app.route('/buscar', methods=['POST'])
+def buscar_producto():
+    archivo_json = os.path.join(os.getcwd(), "datos", "product_data_final.json")
+    
+    # Cargar el archivo JSON
+    with open(archivo_json, "r") as f:
+        productos = json.load(f)
+
+    # Obtener el nombre del archivo enviado
     if 'imagen' not in request.files:
-        return jsonify({'error': 'No se subió ninguna imagen'}), 400
-
+        return jsonify({"error": "No se encontró el archivo de imagen"}), 400
+    
     imagen_subida = request.files['imagen']
-    hash_subido = calcular_hash(imagen_subida)
-
-    resultados = []
-
-    for filename in os.listdir(BASE_DIR):
-        if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
-            path_img = os.path.join(BASE_DIR, filename)
-            hash_img = calcular_hash(path_img)
-            diferencia = hash_subido - hash_img
-            resultados.append({'imagen': filename, 'diferencia': int(diferencia)})
-
-    resultados.sort(key=lambda x: x['diferencia'])
-
-    return jsonify({'resultados': resultados[:5]})
+    nombre_archivo = imagen_subida.filename
+    
+    # Buscar el producto correspondiente
+    for producto in productos:
+        if producto["image_filename"] == nombre_archivo:
+            return jsonify({
+                "producto": producto["product_url"]
+            })
+    
+    return jsonify({"error": "Producto no encontrado"}), 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    app.run(debug=True)
