@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buscador de Imágenes</title>
+</head>
+<body>
+    <h1>Buscador de Imágenes</h1>
+    <form id="uploadForm">
+        <input type="file" name="imagen" />
+        <button type="submit">Buscar productos similares</button>
+    </form>
+    <div id="resultados"></div>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            fetch("/buscar", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultadosDiv = document.getElementById("resultados");
+                resultadosDiv.innerHTML = "";
+                
+                data.forEach(producto => {
+                    const item = `
+                        <div>
+                            <img src="${producto.image_url}" alt="${producto.nombre}" style="width: 100px;">
+                            <p>${producto.nombre}</p>
+                            <a href="${producto.product_url}" target="_blank">Ver producto</a>
+                        </div>
+                    `;
+                    resultadosDiv.innerHTML += item;
+                });
+            })
+            .catch(err => console.error(err));
+        });
+    </script>
+</body>
+</html>
