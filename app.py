@@ -8,12 +8,10 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Verificación del servidor
 @app.route("/", methods=["GET"])
 def home():
     return "Servidor activo y funcionando"
 
-# Ruta para la búsqueda de imágenes
 @app.route("/buscar", methods=["POST"])
 def buscar():
     if 'imagen' not in request.files:
@@ -39,3 +37,6 @@ def buscar():
     top_resultados = [r[1] for r in resultados[:5]]
 
     return jsonify(top_resultados)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
