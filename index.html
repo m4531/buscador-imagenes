@@ -1,42 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Buscador de Imágenes</title>
+    <title>Buscador de Productos</title>
 </head>
 <body>
-    <h1>Buscador de Imágenes</h1>
-    <form id="uploadForm">
-        <input type="file" name="imagen" />
+    <h1>Buscar productos similares</h1>
+    <form id="formulario-busqueda">
+        <input type="file" id="imagen" name="imagen" accept="image/*">
         <button type="submit">Buscar productos similares</button>
     </form>
+
     <div id="resultados"></div>
 
     <script>
-        document.getElementById("uploadForm").addEventListener("submit", function(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
+        document.getElementById("formulario-busqueda").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const fileInput = document.getElementById("imagen");
+            const formData = new FormData();
+            formData.append("imagen", fileInput.files[0]);
 
-            fetch("/buscar", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
+            try {
+                const response = await fetch("https://buscador-imagenes.onrender.com/buscar", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const resultados = await response.json();
                 const resultadosDiv = document.getElementById("resultados");
                 resultadosDiv.innerHTML = "";
-                
-                data.forEach(producto => {
-                    const item = `
+
+                resultados.forEach((producto) => {
+                    resultadosDiv.innerHTML += `
                         <div>
-                            <img src="${producto.image_url}" alt="${producto.nombre}" style="width: 100px;">
+                            <img src="${producto.image_url}" alt="${producto.nombre}" width="150">
                             <p>${producto.nombre}</p>
                             <a href="${producto.product_url}" target="_blank">Ver producto</a>
                         </div>
                     `;
-                    resultadosDiv.innerHTML += item;
                 });
-            })
-            .catch(err => console.error(err));
+            } catch (error) {
+                console.error("Error en la conexión con el servidor:", error);
+                alert("Error en la conexión con el servidor.");
+            }
         });
     </script>
 </body>
