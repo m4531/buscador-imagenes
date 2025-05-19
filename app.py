@@ -1,17 +1,19 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 import imagehash
 from PIL import Image
 import json
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 CORS(app)
 
+# Ruta para verificar que el servidor está activo
 @app.route("/", methods=["GET"])
 def home():
-    return "Servidor activo y funcionando"
+    return render_template("index.html")
 
+# Ruta para manejar las búsquedas de imágenes
 @app.route("/buscar", methods=["POST"])
 def buscar():
     if 'imagen' not in request.files:
@@ -37,6 +39,11 @@ def buscar():
     top_resultados = [r[1] for r in resultados[:5]]
 
     return jsonify(top_resultados)
+
+# Servir archivos estáticos (como imágenes)
+@app.route("/imagenes_catalogo/<path:filename>")
+def servir_imagenes(filename):
+    return send_from_directory("imagenes_catalogo", filename)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
