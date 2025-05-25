@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Busca tu producto por imagen</title>
+</head>
+<body>
+    <h2>Busca tu producto por imagen</h2>
+    <form id="form-busqueda" enctype="multipart/form-data">
+        <input type="file" id="imagen" name="imagen" accept="image/*">
+        <button type="submit">Buscar</button>
+    </form>
+    <div id="resultados"></div>
+    <script>
+        document.getElementById('form-busqueda').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const archivo = document.getElementById('imagen').files[0];
+            if (!archivo) return alert("Selecciona una imagen");
+            const formData = new FormData();
+            formData.append('imagen', archivo);
+            const resp = await fetch('/buscar', { method: 'POST', body: formData });
+            const data = await resp.json();
+            const contenedor = document.getElementById('resultados');
+            contenedor.innerHTML = data.map(obj => `
+                <div style="margin:10px;padding:10px;border:1px solid #ccc;">
+                    <img src="${obj.imagen_url}" width="100"><br>
+                    <strong>${obj.nombre}</strong><br>
+                    <a href="${obj.producto_url}" target="_blank">Ver producto</a>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>
