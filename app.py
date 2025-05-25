@@ -46,14 +46,18 @@ def index():
 def buscar():
     if 'imagen' not in request.files:
         return 'No se envió ninguna imagen', 400
+
     archivo = request.files['imagen']
     ruta = os.path.join(app.config['UPLOAD_FOLDER'], archivo.filename)
     archivo.save(ruta)
+
     try:
+        print(f">> Procesando imagen: {archivo.filename}")
         img_arr = procesar_imagen(ruta)
         vector = model.predict(img_arr)
         similitudes = cosine_similarity(vector, vectores_base)[0]
         indices_top = np.argsort(similitudes)[::-1][:5]
+
         resultados = []
         for i in indices_top:
             nombre_img = nombres_imagenes[i]
@@ -64,9 +68,13 @@ def buscar():
                 "imagen_url": producto.get("image_url", ""),
                 "producto_url": producto.get("product_url", "#")
             })
+
         return jsonify(resultados)
+
     except Exception as e:
+        print(f"[ERROR] {e}")  # <-- Esto te mostrará en los logs de Render el motivo real
         return f'Error al procesar la imagen: {e}', 500
+
 
 # 🚨 Esto es lo que faltaba
 if __name__ == '__main__':
