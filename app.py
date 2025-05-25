@@ -33,7 +33,7 @@ with open('producto_data.json', 'r') as f:
 
 # Preprocesar imagen para MobileNet
 def procesar_imagen(file_path):
-    img = image.load_img(file_path, target_size=(224, 224))
+    img = image.load_img(file_path, target_size=(224, 224)).convert('RGB')  # Fuerza conversión a RGB
     arr = image.img_to_array(img)
     arr = np.expand_dims(arr, axis=0)
     return preprocess_input(arr)
@@ -52,9 +52,12 @@ def buscar():
     archivo.save(ruta)
 
     try:
-        print(f">> Procesando imagen: {archivo.filename}")
+        print(">> Procesando imagen...")
         img_arr = procesar_imagen(ruta)
+        print(">> Imagen procesada. Generando predicción...")
         vector = model.predict(img_arr)
+        print(">> Predicción lista.")
+
         similitudes = cosine_similarity(vector, vectores_base)[0]
         indices_top = np.argsort(similitudes)[::-1][:5]
 
