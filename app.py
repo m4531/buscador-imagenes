@@ -12,21 +12,26 @@ from sklearn.metrics.pairwise import cosine_similarity
 app = Flask(__name__)
 CORS(app)
 
-UPLOAD_FOLDER = 'imagenes_catalogo'
+# En Render solo puedes escribir en /tmp
+UPLOAD_FOLDER = '/tmp'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Modelo base de MobileNet
 base_model = MobileNet(weights='imagenet', include_top=False, pooling='avg')
 model = Model(inputs=base_model.input, outputs=base_model.output)
 
+# Cargar vectores y nombres
 with open('datos/vectores_imagenes.pkl', 'rb') as f:
     data = pickle.load(f)
     vectores_base = np.array(data['vectores'])
     nombres_imagenes = data['nombres']
 
+# Cargar metadata de productos
 with open('producto_data.json', 'r') as f:
     metadata = json.load(f)
     info_productos = {item['image_filename']: item for item in metadata}
 
+# Preprocesar imagen para MobileNet
 def procesar_imagen(file_path):
     img = image.load_img(file_path, target_size=(224, 224))
     arr = image.img_to_array(img)
@@ -63,6 +68,7 @@ def buscar():
     except Exception as e:
         return f'Error al procesar la imagen: {e}', 500
 
-# 🚨 ESTA ES LA PARTE IMPORTANTE PARA RENDER
+# 🚨 Esto es lo que faltaba
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
