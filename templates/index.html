@@ -87,56 +87,44 @@
     <div id="resultados"></div>
 
     <script>
-        // Vista previa de la imagen
-        document.getElementById('imagen').addEventListener('change', function (e) {
-            const archivo = e.target.files[0];
-            const preview = document.getElementById('preview');
-            if (archivo) {
-                preview.src = URL.createObjectURL(archivo);
-                preview.style.display = 'block';
-            } else {
-                preview.src = '';
-                preview.style.display = 'none';
-            }
-        });
+document.getElementById('form-busqueda').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const archivo = document.getElementById('imagen').files[0];
+    if (!archivo) return alert("Selecciona una imagen");
 
-        // Envío del formulario
-        document.getElementById('form-busqueda').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const archivo = document.getElementById('imagen').files[0];
-            if (!archivo) return alert("Selecciona una imagen");
+    const formData = new FormData();
+    formData.append('imagen', archivo);
 
-            const formData = new FormData();
-            formData.append('imagen', archivo);
+    const contenedor = document.getElementById('resultados');
+    contenedor.innerHTML = "<p>Cargando resultados...</p>";
 
-            const resp = await fetch('/buscar', {
-                method: 'POST',
-                body: formData
-            });
+    try {
+        const resp = await fetch('/buscar', { method: 'POST', body: formData });
 
-            const contenedor = document.getElementById('resultados');
-            contenedor.innerHTML = '';
+        if (!resp.ok) {
+            const errorText = await resp.text();
+            contenedor.innerHTML = `<p style="color:red;">Error del servidor: ${errorText}</p>`;
+            return;
+        }
 
-            try {
-                const data = await resp.json();
+        const data = await resp.json();
 
-                if (!Array.isArray(data) || data.length === 0) {
-                    contenedor.innerHTML = '<p>No se encontraron resultados.</p>';
-                    return;
-                }
+        if (!Array.isArray(data)) {
+            contenedor.innerHTML = `<p style="color:red;">Formato inesperado en respuesta</p>`;
+            return;
+        }
 
-                contenedor.innerHTML = data.map(obj => `
-                    <div class="producto">
-                        <img src="${obj.imagen_url}" alt="${obj.nombre}"><br>
-                        <strong>${obj.nombre}</strong><br>
-                        <a href="${obj.producto_url}" target="_blank">Ver producto</a>
-                    </div>
-                `).join('');
-            } catch (err) {
-                contenedor.innerHTML = '<p style="color:red;">Error al procesar la búsqueda.</p>';
-                console.error(err);
-            }
-        });
-    </script>
+        contenedor.innerHTML = data.map(obj => `
+            <div style="margin:10px;padding:10px;border:1px solid #ccc;">
+                <img src="${obj.imagen_url}" width="100"><br>
+                <strong>${obj.nombre}</strong><br>
+                <a href="${obj.producto_url}" target="_blank">Ver producto</a>
+            </div>
+        `).join('');
+    } catch (err) {
+        contenedor.innerHTML = `<p style="color:red;">Error de conexión o servidor: ${err}</p>`;
+    }
+});
+</script>
 </body>
 </html>
