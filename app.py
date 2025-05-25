@@ -66,8 +66,3 @@ def buscar():
 # 🚨 ESTA ES LA PARTE IMPORTANTE PARA RENDER
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
-<<<<<<< HEAD
-    app.run(host='0.0.0.0', port=port)
-=======
-    app.run(host='0.0.0.0', port=port)
->>>>>>> e04ce39f4a6399d17aa95e42638a0ff681f12343
