@@ -3,4 +3,8 @@ flask-cors
 tensorflow
 scikit-learn
 Pillow
+<<<<<<< HEAD
 gunicorn
+=======
+gunicorn
+>>>>>>> e04ce39f4a6399d17aa95e42638a0ff681f12343
