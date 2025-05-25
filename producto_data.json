@@ -1,32 +1,50 @@
 [
   {
-    "image_filename": "t-shirt-design.webp",
-    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/2022/11/t-shirt-design.webp",
-    "nombre": "T-Shirt Design",
-    "product_url": "https://pruebas.mitos-comercial.com/producto/t-shirt-design"
+    "image_filename": "shop-08",
+    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/2022/11/shop-08.jpeg",
+    "nombre": "shop-08",
+    "product_url": "https://pruebas.mitos-comercial.com/product/cup-printing/"
   },
   {
-    "image_filename": "mug-printing.webp",
-    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/mug-printing.webp",
-    "nombre": "Mug Printing",
-    "product_url": "https://pruebas.mitos-comercial.com/producto/mug-printing"
+    "image_filename": "shop-07.webp",
+    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/2022/11/shop-07.jpeg",
+    "nombre": "shop-07",
+    "product_url": "https://pruebas.mitos-comercial.com/product/food-box-design/"
   },
   {
-    "image_filename": "cup-printing.webp",
-    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/cup-printing.webp",
-    "nombre": "Cup Printing",
-    "product_url": "https://pruebas.mitos-comercial.com/producto/cup-printing"
+    "image_filename": "shop-06.webp",
+    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/2022/11/shop-06.jpeg",
+    "nombre": "shop-06",
+    "product_url": "https://pruebas.mitos-comercial.com/product/packet-design/"
   },
   {
-    "image_filename": "box-printing.webp",
-    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/box-printing.webp",
-    "nombre": "Box Printing",
-    "product_url": "https://pruebas.mitos-comercial.com/producto/box-printing"
+    "image_filename": "shop-05webp",
+    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/2022/11/shop-05.jpeg",
+    "nombre": "shop-05",
+    "product_url": "https://pruebas.mitos-comercial.com/product/card-printing/"
   },
   {
-    "image_filename": "card-printing.webp",
-    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/card-printing.webp",
-    "nombre": "Card Printing",
-    "product_url": "https://pruebas.mitos-comercial.com/producto/card-printing"
+    "image_filename": "shop-04.webp",
+    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/2022/11/shop-04.jpeg",
+    "nombre": "shop-04",
+    "product_url": "https://pruebas.mitos-comercial.com/product/box-printing/"
+  }
+  {
+    "image_filename": "shop-03.webp",
+    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/2022/11/shop-03.jpeg",
+    "nombre": "shop-03",
+    "product_url": "https://pruebas.mitos-comercial.com/product/cup-printing-2/"
+  }
+  {
+    "image_filename": "shop-02.webp",
+    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/2022/11/shop-02.jpeg",
+    "nombre": "shop-02",
+    "product_url": "https://pruebas.mitos-comercial.com/product/mug-printing/"
+  }
+  {
+    "image_filename": "ct-shirt-design.webp",
+    "image_url": "https://pruebas.mitos-comercial.com/wp-content/uploads/2022/11/shop-01.jpg",
+    "nombre": "t-shirt-design",
+    "product_url": "https://pruebas.mitos-comercial.com/product/t-shirt-design/"
   }
 ]

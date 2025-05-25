@@ -1,4 +1,3 @@
-
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 from tensorflow.keras.applications.mobilenet import MobileNet, preprocess_input
@@ -64,5 +63,7 @@ def buscar():
     except Exception as e:
         return f'Error al procesar la imagen: {e}', 500
 
+# 🚨 ESTA ES LA PARTE IMPORTANTE PARA RENDER
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
