@@ -115,12 +115,13 @@ document.getElementById('form-busqueda').addEventListener('submit', async functi
         }
 
         contenedor.innerHTML = data.map(obj => `
-            <div style="margin:10px;padding:10px;border:1px solid #ccc;">
-                <img src="${obj.imagen_url}" width="100"><br>
-                <strong>${obj.nombre}</strong><br>
-                <a href="${obj.producto_url}" target="_blank">Ver producto</a>
-            </div>
-        `).join('');
+    <div style="margin:10px;padding:10px;border:1px solid #ccc;">
+        <img src="${obj.imagen_url}" width="100"><br>
+        <strong>${obj.nombre}</strong><br>
+        Similitud: ${(obj.similitud * 100).toFixed(2)}%<br>
+        <a href="${obj.producto_url}" target="_blank">Ver producto</a>
+    </div>
+`).join('');
     } catch (err) {
         contenedor.innerHTML = `<p style="color:red;">Error de conexión o servidor: ${err}</p>`;
     }
