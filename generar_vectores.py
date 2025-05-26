@@ -1,4 +1,4 @@
-import os
+da os
 import numpy as np
 import pickle
 from tensorflow.keras.applications.mobilenet import MobileNet, preprocess_input
@@ -42,7 +42,8 @@ data = {
     "nombres": nombres
 }
 
-with open("vectores_imagenes.pkl", "wb") as f:
+with open("datos/vectores_imagenes.pkl", "wb") as f:
     pickle.dump(data, f)
+
 
 print("✅ Archivo vectores_imagenes.pkl generado correctamente.")
