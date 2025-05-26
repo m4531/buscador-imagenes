@@ -48,7 +48,7 @@ def buscar():
     archivo.save(ruta)
     try:
         img_arr = procesar_imagen(ruta)
-        vector = model.predict(img_arr)
+        vector = model.predict(img_arr, verbose=0)
         similitudes = cosine_similarity(vector, vectores_base)[0]
         indices_top = np.argsort(similitudes)[::-1][:5]
         resultados = []
