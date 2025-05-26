@@ -51,22 +51,25 @@ def buscar():
         vector = model.predict(img_arr, verbose=0)
         similitudes = cosine_similarity(vector, vectores_base)[0]
         indices_top = np.argsort(similitudes)[::-1][:5]
+
         resultados = []
-for i in indices_top:
-    nombre_img = nombres_imagenes[i]
-    producto = info_productos.get(nombre_img, {})
-    resultados.append({
-        "nombre": producto.get("nombre", "Producto desconocido"),
-        "imagen_local": nombre_img,
-        "imagen_url": producto.get("image_url", ""),
-        "producto_url": producto.get("product_url", "#"),
-        "similitud": float(similitudes[i])
-    })
+        for i in indices_top:
+            nombre_img = nombres_imagenes[i]
+            producto = info_productos.get(nombre_img, {})
+            resultados.append({
+                "nombre": producto.get("nombre", "Producto desconocido"),
+                "imagen_local": nombre_img,
+                "imagen_url": producto.get("image_url", ""),
+                "producto_url": producto.get("product_url", "#"),
+                "similitud": float(similitudes[i])
+            })
 
         return jsonify(resultados)
+
     except Exception as e:
         traceback.print_exc()
         return f'Error al procesar la imagen: {e}', 500
+
 
 # Para Render
 if __name__ == '__main__':
