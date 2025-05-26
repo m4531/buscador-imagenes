@@ -51,6 +51,7 @@ def buscar():
         vector = model.predict(img_arr, verbose=0)
         similitudes = cosine_similarity(vector, vectores_base)[0]
         indices_top = np.argsort(similitudes)[::-1][:5]
+        "similitud": float(similitudes[i])
         resultados = []
         for i in indices_top:
             nombre_img = nombres_imagenes[i]
