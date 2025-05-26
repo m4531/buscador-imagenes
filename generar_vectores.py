@@ -1,38 +1,48 @@
-# generar_vectores.py
 import os
-import pickle
 import numpy as np
-import json
+import pickle
 from tensorflow.keras.applications.mobilenet import MobileNet, preprocess_input
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import Model
 
+# Ruta donde están tus imágenes
+RUTA_IMAGENES = "imagenes_catalogo"
+
+# Carga modelo MobileNet sin capa superior
 base_model = MobileNet(weights='imagenet', include_top=False, pooling='avg')
 model = Model(inputs=base_model.input, outputs=base_model.output)
 
-with open('producto_data.json', 'r') as f:
-    metadata = json.load(f)
+# Procesa una imagen y retorna el vector
+def extraer_vector(imagen_path):
+    img = image.load_img(imagen_path, target_size=(224, 224)).convert('RGB')
+    arr = image.img_to_array(img)
+    arr = np.expand_dims(arr, axis=0)
+    arr = preprocess_input(arr)
+    vector = model.predict(arr)
+    return vector.flatten().tolist()  # convertimos a lista nativa
 
-imagenes_validas = {item['image_filename']: item for item in metadata}
 vectores = []
 nombres = []
-carpeta = 'imagenes_catalogo'
 
-for nombre_img in imagenes_validas:
-    path = os.path.join(carpeta, nombre_img)
-    if os.path.exists(path):
-        img = image.load_img(path, target_size=(224, 224))
-        arr = image.img_to_array(img)
-        arr = np.expand_dims(arr, axis=0)
-        arr = preprocess_input(arr)
-        vector = model.predict(arr)[0]
-        vectores.append(vector)
-        nombres.append(nombre_img)
-        print(f"Procesado: {nombre_img}")
-    else:
-        print(f"No encontrado: {nombre_img}")
+# Itera sobre imágenes en el directorio
+for nombre_archivo in os.listdir(RUTA_IMAGENES):
+    ruta = os.path.join(RUTA_IMAGENES, nombre_archivo)
+    if os.path.isfile(ruta) and nombre_archivo.lower().endswith(('.png', '.jpg', '.jpeg')):
+        try:
+            vector = extraer_vector(ruta)
+            vectores.append(vector)
+            nombres.append(nombre_archivo)
+            print(f"> Procesada: {nombre_archivo}")
+        except Exception as e:
+            print(f"[ERROR] {nombre_archivo}: {e}")
 
-with open("datos/vectores_imagenes.pkl", "wb") as f:
-    pickle.dump({"vectores": vectores, "nombres": nombres}, f)
+# Guardamos como listas simples
+data = {
+    "vectores": vectores,
+    "nombres": nombres
+}
 
-print("Vectores guardados en datos/vectores_imagenes.pkl")
+with open("vectores_imagenes.pkl", "wb") as f:
+    pickle.dump(data, f)
+
+print("✅ Archivo vectores_imagenes.pkl generado correctamente.")
