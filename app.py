@@ -79,7 +79,6 @@ def buscar():
         return f'Error al procesar la imagen: {e}', 500
 
 
-# 🚨 Esto es lo que faltaba
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
