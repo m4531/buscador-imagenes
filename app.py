@@ -51,7 +51,7 @@ def buscar():
         vector = model.predict(img_arr, verbose=0)
         similitudes = cosine_similarity(vector, vectores_base)[0]
         indices_top = np.argsort(similitudes)[::-1][:5]
-resultados = []
+        resultados = []
 for i in indices_top:
     nombre_img = nombres_imagenes[i]
     producto = info_productos.get(nombre_img, {})
@@ -62,6 +62,7 @@ for i in indices_top:
         "producto_url": producto.get("product_url", "#"),
         "similitud": float(similitudes[i])
     })
+
         return jsonify(resultados)
     except Exception as e:
         traceback.print_exc()
